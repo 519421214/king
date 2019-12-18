@@ -14,9 +14,6 @@ repositories {
     }
     mavenCentral()
 }
-//jar{
-//    manifest {attributes 'Main-Class':'com.trgis.sb2sc.Sb2scConfigApplication'}
-//}
 
 //排除默认的tomcat依赖①
 //jre无法直接跑微服务jar，需要另外注入依赖包，undertow替换后可以直接跑
@@ -24,20 +21,17 @@ configurations {
     compile.exclude module: 'spring-boot-starter-tomcat'
 }
 dependencies {
+
     implementation 'org.springframework.boot:spring-boot-starter'
     //排除默认的tomcat依赖，undertow替换②
     //undertow嵌入小，性能略比tomcat好
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-undertow')
-
     //加入依赖
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-config-server
     compile group: 'org.springframework.cloud', name: 'spring-cloud-config-server', version: '2.2.0.RELEASE'
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '2.2.0.RELEASE'
 
     //连接config-server也需要用户名和密码
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-actuator')
-
 }

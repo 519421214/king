@@ -4,11 +4,23 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/k-config" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../gradle_home/gradle-6.0.1" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/k-config" />
+          </set>
+        </option>
+        <option name="useAutoImport" value="true" />
+        <option name="useQualifiedModuleNames" value="true" />
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="LOCAL" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/k-eureka" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../gradle_home/gradle-6.0.1" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/k-eureka" />
           </set>
         </option>
         <option name="useAutoImport" value="true" />

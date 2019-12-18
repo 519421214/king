@@ -1,5 +1,5 @@
 server:
-  port: 8800
+  port: 7071
 spring:
   security:
     basic:
@@ -16,7 +16,7 @@ spring:
 #          uri: https://git.coding.net/yirenyishi/springcloud-config-profile
 #          searchPaths: '{application}'
         native:
-          search-locations: classpath:/config
+          searchLocations: classpath:/config
 eureka:
   client:
     service-url:
