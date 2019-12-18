@@ -1,78 +1,49 @@
 plugins {
-    id 'org.springframework.boot' version '2.1.4.RELEASE'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
-    //id "io.freefair.lombok" version "3.2.0"
 }
-
 apply plugin: 'io.spring.dependency-management'
-
-group = 'com.gosuncn'
-version = '1.0.0'
+group = 'com.king'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-
 repositories {
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
     mavenCentral()
-    maven { url = 'http://192.168.25.215:8081/repository/maven-public/' }
-   
+}
+//jar{
+//    manifest {attributes 'Main-Class':'com.trgis.sb2sc.Sb2scConfigApplication'}
+//}
+
+//排除默认的tomcat依赖①
+//jre无法直接跑微服务jar，需要另外注入依赖包，undertow替换后可以直接跑
+configurations {
+    compile.exclude module: 'spring-boot-starter-tomcat'
+}
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    //排除默认的tomcat依赖，undertow替换②
+    //undertow嵌入小，性能略比tomcat好
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-undertow')
+    
+    //加入依赖
+    //关于服务发现的选型，可以参考一下网址eureka/zookeeper/consul的CAP比较
+    //https://www.jianshu.com/p/8494698d08b2
+    //https://my.oschina.net/thinwonton/blog/1622905
+//    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '2.2.0.RELEASE'
+    //加入security，是因为访问eureka-server需要用户名和密码访问，为了安全
+    compile('org.springframework.boot:spring-boot-starter-security')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    runtimeOnly 'mysql:mysql-connector-java'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    compileOnly 'org.projectlombok:lombok:1.18.6'
-    annotationProcessor 'org.projectlombok:lombok:1.18.6'
-
-
-    //https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter
-    implementation 'com.alibaba:druid-spring-boot-starter:1.1.10'
-    implementation('org.springframework.boot:spring-boot-starter-data-redis')
-
-    // https://mvnrepository.com/artifact/com.baomidou/mybatis-plus
-    implementation('com.baomidou:mybatis-plus-boot-starter:3.1.0')
-    implementation('com.baomidou:mybatis-plus-generator:3.1.0')
-    implementation('org.apache.velocity:velocity-engine-core:2.1')
-
-
-    //https://mvnrepository.com/artifact/commons-codec/commons-codec/1.11
-    implementation('commons-codec:commons-codec:1.11')
-    // https://mvnrepository.com/artifact/commons-lang/commons-lang3
-
-    //compile ('commons-lang:commons-lang3:3.9')
-
-    // https://mvnrepository.com/artifact/commons-io/commons-io
-    compile ('commons-io:commons-io:2.6')
-
-    //swagger-start（Swagger api 框架）
-    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
-    implementation('io.springfox:springfox-swagger2:2.9.2')
-    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
-    implementation('io.springfox:springfox-swagger-ui:2.9.2')
-    //https://github.com/xiaoymin/Swagger-Bootstrap-UI
-    implementation('com.github.xiaoymin:swagger-bootstrap-ui:1.9.2')
-
-    implementation "org.apache.httpcomponents:httpmime:4.5.8"
-    implementation "org.apache.httpcomponents:httpclient:4.5.8"
-    //JSON 数据解析，功能多样且快速
-    implementation 'com.alibaba:fastjson:1.2.54'
-    //websocket 基于TCP的一种新的网络协议。它实现了浏览器与服务器全双工(full-duplex)通信——允许服务器主动发送信息给客户端。
-    //https://blog.csdn.net/moshowgame/article/details/80275084
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    //切面 用于日志收集
-    implementation 'org.springframework.boot:spring-boot-starter-aop:2.0.4.RELEASE'
-    
-    implementation 'com.github.andyczy:java-excel-utils:4.0'
-    implementation 'org.apache.poi:poi:4.1.0'
-    implementation 'org.apache.poi:poi-ooxml:4.1.0'
-
-    //jackson依赖
-//    implementation('com.fasterxml.jackson.core:jackson-core:2.9.7')
-//    implementation('com.fasterxml.jackson.core:jackson-databind:2.9.7')
-//    implementation('com.fasterxml.jackson.core:jackson-annotations:2.9.7')
-
-
-
-
+test {
+    useJUnitPlatform()
 }
